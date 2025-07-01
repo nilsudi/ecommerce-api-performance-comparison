@@ -1,0 +1,155 @@
+type Query {
+    # User Entity Queries
+    getAllUserEntities: [UserEntity!]!
+    getUserEntityById(id: ID!): UserEntity
+    getAllUserEntityIds: [ID!]!
+
+    # Product Entity Queries
+    getAllProductEntities: [ProductEntity!]!
+    getProductEntityById(id: ID!): ProductEntity
+    getAllProductEntityIds: [ID!]!
+
+    # Order Entity Queries
+    getAllOrderEntities: [OrderEntity!]!
+    getOrderEntityById(id: ID!): OrderEntity
+    getAllOrderEntityIds: [ID!]!
+    getPaginatedOrderEntities(page: Int = 0, size: Int = 20): OrderEntityPage!
+
+    # User Document Queries
+    getAllUserDocuments: [UserDocument!]!
+    getUserDocumentById(id: ID!): UserDocument
+    getAllUserDocumentIds: [ID!]!
+
+    # Product Document Queries
+    getAllProductDocuments: [ProductDocument!]!
+    getProductDocumentById(id: ID!): ProductDocument
+    getAllProductDocumentIds: [ID!]!
+
+    # Order Document Queries
+    getAllOrderDocuments: [OrderDocument!]!
+    getOrderDocumentById(id: ID!): OrderDocument
+
+    # Embedded Order Document Queries
+    getAllEmbeddedOrderDocuments: [EmbeddedOrderDocument!]!
+    getEmbeddedOrderDocumentById(id: ID!): EmbeddedOrderDocument
+    getAllEmbeddedOrderDocumentIds: [ID!]!
+    getPaginatedEmbeddedOrderDocuments(
+        page: Int = 0
+        size: Int = 20
+    ): EmbeddedOrderDocumentPage!
+}
+
+type Mutation {
+    # User Entity Mutations
+    createUserEntity(email: String!, name: String!): UserEntity!
+    updateUserEntity(id: ID!, email: String!, name: String!): UserEntity!
+    deleteUserEntity(id: ID!): Boolean!
+
+    # Product Entity Mutations
+    createProductEntity(name: String!, price: Float!): ProductEntity!
+    updateProductEntity(id: ID!, name: String!, price: Float!): ProductEntity!
+    deleteProductEntity(id: ID!): Boolean!
+
+    # Order Entity Mutations
+    createOrderEntity(userId: ID!, productIds: [ID!]!): OrderEntity!
+    updateOrderEntity(id: ID!, userId: ID!, productIds: [ID!]!): OrderEntity!
+    deleteOrderEntity(id: ID!): Boolean!
+
+    # User Document Mutations
+    createUserDocument(email: String!, name: String!): UserDocument!
+    updateUserDocument(id: ID!, email: String!, name: String!): UserDocument!
+    deleteUserDocument(id: ID!): Boolean!
+
+    # Product Document Mutations
+    createProductDocument(name: String!, price: Float!): ProductDocument!
+    updateProductDocument(id: ID!, name: String!, price: Float!): ProductDocument!
+    deleteProductDocument(id: ID!): Boolean!
+
+    # Order Document Mutations
+    userId: ID!, produccreateOrderDocument(tIds: [ID!]!): OrderDocument!
+    updateOrderDocument(id: ID!, userId: ID!, productIds: [ID!]!): OrderDocument!
+    deleteOrderDocument(id: ID!): Boolean!
+
+    # Embedded Order Document Mutations
+    createEmbeddedOrderDocument(
+        userId: ID!,
+        productIds: [ID!]!
+    ): EmbeddedOrderDocument!
+
+    updateEmbeddedOrderDocument(
+        id: ID!
+        productIds: [ID!]!
+    ): EmbeddedOrderDocument!
+
+    deleteEmbeddedOrderDocument(id: ID!): Boolean!
+}
+
+
+scalar DateTime
+scalar Long
+
+type UserEntity {
+    id: ID!
+    email: String!
+    name: String!
+}
+
+type ProductEntity {
+    id: ID!
+    price: Float!
+    name: String!
+}
+
+type OrderEntity {
+    id: ID!
+    user: UserEntity!
+    products: [ProductEntity]!
+    totalPrice: Float!
+    orderDate: DateTime!
+}
+
+type UserDocument {
+    id: ID!
+    email: String!
+    name: String!
+}
+
+type ProductDocument {
+    id: ID!
+    price: Float!
+    name: String!
+}
+
+type OrderDocument {
+    id: ID!
+    userId: ID!
+    productIds: [ID]!
+    totalPrice: Float!
+    orderDate: DateTime!
+}
+
+type EmbeddedOrderDocument {
+    id: ID!
+    user: UserDocument!
+    products: [ProductDocument!]!
+    totalPrice: Float!
+    orderDate: DateTime!
+}
+
+type EmbeddedOrderDocumentPage {
+    content: [EmbeddedOrderDocument!]!
+    pageNumber: Int!
+    pageSize: Int!
+    totalElements: Long!
+    totalPages: Int!
+    last: Boolean!
+}
+
+type OrderEntityPage {
+    content: [OrderEntity!]!
+    pageNumber: Int!
+    pageSize: Int!
+    totalElements: Long!
+    totalPages: Int!
+    last: Boolean!
+}
